@@ -1,9 +1,6 @@
-require 'sinatra/activerecord'
+class Space 
+  validates_confirmation of :space_name, :price_per_night
 
-class Space
-
-  validates_presence_of :space_name, :description, :price_per_night, :user_id, :request_id
-  validates_uniquenss_of :space_name, message: 'There is already a space with this name'
-
-  has_many :requests
+  has_many requests
+  belongs to users
 end
