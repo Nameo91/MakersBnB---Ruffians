@@ -1,0 +1,9 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: ruffiansbnb
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: ruffiansbnb_test
