@@ -10,6 +10,12 @@ Someone in your team should fork this seed repo to their Github account. Everyon
 # Install gems
 bundle install
 
+rake db:create
+
+rake db:migrate
+
+rake db:migrate RACK_ENV=test
+
 # Run the tests
 rspec
 
