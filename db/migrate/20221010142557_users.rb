@@ -7,7 +7,6 @@ class Users < ActiveRecord::Migration[7.0]
       t.string :email
       t.string :mobile_number
       t.string :password_digest
-      t.integer :request_id
     end
   end
 end
