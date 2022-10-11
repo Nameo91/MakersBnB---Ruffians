@@ -1,9 +1,9 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'sinatra/activerecord'
-require 'user'
-require 'space'
-require 'request'
+require_relative 'lib/user'
+require_relative 'lib/space'
+require_relative 'lib/request'
 
 class Application < Sinatra::Base
   configure :development do
