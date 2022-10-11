@@ -16,13 +16,37 @@ describe Application do
   # accross multiple RSpec files (for example, have
   # one test suite for each set of related features),
   # you can duplicate this test file to create a new one.
-
+  before(:each) do
+    Space.create(space_name: 'makers', description: 'Awesome', price_per_night: '100', user_id: '1', request_id: '1')
+  end
 
   context 'GET /' do
     it 'should get the homepage' do
-      response = get('/')
+      @response = get('/')
 
-      expect(response.status).to eq(200)
+      responds_ok?
     end
+  end
+
+  context 'GET /spaces' do
+    it 'should show list of all spaces' do
+      @response = get('/spaces')
+
+      responds_ok?
+      copy_test('<h1>Check out all spaces</h1>')
+      copy_test('makers')
+      copy_test('100')
+      copy_test('Awesome')
+    end
+  end
+
+  private
+
+  def responds_ok?
+    expect(@response.status).to eq(200)
+  end
+
+  def copy_test(text)
+    expect(@response.body).to include(text)
   end
 end
