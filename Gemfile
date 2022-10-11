@@ -25,3 +25,4 @@ group :test do
     gem "capybara", "~> 3.37" 
     gem "database_cleaner"
 end
+gem "pry", "~> 0.14.1"
