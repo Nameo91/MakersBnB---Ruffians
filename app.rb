@@ -20,15 +20,13 @@ class Application < Sinatra::Base
     return erb(:spaces)
   end
 
-  get '/spaces/:id' do
-  
-    @space = Space.find_by space_name: :space_name
-   
-    return erb(:space_name)
-  end
-
   get '/spaces/new' do
     return erb(:add_space)
+  end
+
+  get '/spaces/:id' do
+    @space = Space.find(params[:id])
+    return erb(:space_name)
   end
 
   post '/spaces' do
@@ -37,7 +35,6 @@ class Application < Sinatra::Base
       description: params[:description],
       price_per_night: params[:price_per_night]
     )
-
-    return ''
+    redirect '/spaces'
   end
 end

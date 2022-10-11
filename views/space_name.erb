@@ -4,6 +4,7 @@
     <style>
         body {background-color: #878f99;}
         h1   {color: 3e4444;}
+        h2   {color: 3e4444;}
         p    {color: 3e4444;} 
         p {font-style: italic;}
     </style>
@@ -12,8 +13,10 @@
     </head>
     <body>
         <h1><%= @space.space_name %></h1>
-        <p><%= @space.description %></p>
-        <p><%= @space.price_per_night %></p>
+        <h2>Description: <%= @space.description %></h2>
+        <p>Price per night: £<%= @space.price_per_night %>0</p>
         
+        <a href= "../.."> Home</a><br>
+        <a href= ".."> Back to all spaces</a><br>
     </body>
 </html>
