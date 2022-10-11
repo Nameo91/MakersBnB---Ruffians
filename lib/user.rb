@@ -1,7 +1,7 @@
 require 'sinatra/activerecord'
 require 'bcrypt'
 
-class User 
+class User < ActiveRecord::Base
   has_secure_password 
 
   validates_presence_of :first_name, :last_name, :username, :email, :mobile_number, :password_confirmation

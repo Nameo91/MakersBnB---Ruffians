@@ -1,6 +1,8 @@
-class Space 
-  validates_confirmation of :space_name, :price_per_night
+require 'sinatra/activerecord'
 
-  has_many requests
-  belongs to users
+class Space < ActiveRecord::Base
+  validates_confirmation_of :space_name, :price_per_night
+
+  has_many :requests
+  belongs_to :users
 end
