@@ -34,7 +34,7 @@ describe Application do
       @response = get('/spaces')
 
       responds_ok?
-      copy_test('<h1>Check out all spaces</h1>')
+      copy_test('<h2>Check out all spaces</h2>')
       copy_test('Makers HQ')
       copy_test('£100.0')
       copy_test('Awesome')
@@ -45,15 +45,27 @@ describe Application do
   end
 
   context 'GET /spaces/new' do
-    xit 'returns an html form to add a new space' do
+    it 'returns an html form to add a new space' do
       @response = get('/spaces/new')
 
       responds_ok?
       copy_test('<form method="POST" action="/spaces">')
       copy_test('<input type="text" name="space_name">')
-      copy_test('<input type="text" name="price_per_night">')
       copy_test('<input type="text" name="description">')
+      copy_test('<input type="text" name="price_per_night">')
       # copy_test('<select name="user_id">')
+    end
+  end
+
+
+  context 'POST /spaces' do
+    it 'Creates new space record' do
+      @response = post('/spaces', space_name: 'The Gherkin', price_per_night: '500.0', description: 'A little corporate')
+
+      responds_ok?
+      expect(Space.last.space_name).to eq('The Gherkin')
+      expect(Space.last.description).to eq('A little corporate')
+      # expect(Space.last.price_per_night).to eq('500')
     end
   end
 
