@@ -14,6 +14,7 @@ class Application < Sinatra::Base
     return erb(:index)
   end
 
+
   get '/spaces' do
     #returns a page with a list of all spaces
     #n.b. future task return just first 10 spaces
