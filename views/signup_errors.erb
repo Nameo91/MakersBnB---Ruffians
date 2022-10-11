@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8'>
+        <title>Error</title>
+        <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700'>
+    </head>
+    <body>
+        <header>
+            <h1>Invalid Signup Request</a></h1>
+        </header>
+        <main>
+        <% @new_user.errors.full_messages.each do |error| %> 
+            <%= error %><br />
+        <% end  %>
+        </main>
+        <footer>
+          <a href= '/' >Home</a>
+        </footer>
+    </body>
+</html>
