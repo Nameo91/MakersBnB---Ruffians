@@ -32,12 +32,22 @@ class Application < Sinatra::Base
     return erb(:spaces)
   end
 
-  get '/space/new' do
-    #returns the form page for creating a new space
+  get '/spaces/new' do
+    return erb(:add_space)
+  end
+
+  get '/spaces/:id' do
+    @space = Space.find(params[:id])
+    return erb(:space_name)
   end
 
   post '/spaces' do
-    #adds a new space to the spaces page
+    Space.create!(
+      space_name: params[:space_name],
+      description: params[:description],
+      price_per_night: params[:price_per_night]
+    )
+    redirect '/spaces'
   end
 
   post '/signup' do

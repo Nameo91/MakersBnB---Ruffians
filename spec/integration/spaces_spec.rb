@@ -17,8 +17,8 @@ describe Application do
   # one test suite for each set of related features),
   # you can duplicate this test file to create a new one.
   before(:each) do
-    Space.create(space_name: 'Makers HQ', description: 'Awesome', price_per_night: '100.0', user_id: '1', request_id: '1')
-    Space.create(space_name: 'The Gherkin', description: 'A little corporate', price_per_night: '500.0', user_id: '2', request_id: '2')
+    Space.create(id: 1, space_name: 'Makers HQ', description: 'Awesome', price_per_night: '100.0', user_id: '1', request_id: '1')
+    Space.create(id: 2, space_name: 'Gherkin', description: 'A little corporate', price_per_night: '500.0', user_id: '2', request_id: '2')
   end
 
   context 'GET /' do
@@ -34,26 +34,47 @@ describe Application do
       @response = get('/spaces')
 
       responds_ok?
-      copy_test('<h1>Check out all spaces</h1>')
+      copy_test('<h2>Check out all spaces</h2>')
       copy_test('Makers HQ')
       copy_test('£100.0')
-      copy_test('Awesome')
-      copy_test('The Gherkin')
+      copy_test('Gherkin')
       copy_test('£500.0')
-      copy_test('A little corporate')
     end
   end
 
   context 'GET /spaces/new' do
-    xit 'returns an html form to add a new space' do
+    it 'returns an html form to add a new space' do
       @response = get('/spaces/new')
 
       responds_ok?
       copy_test('<form method="POST" action="/spaces">')
       copy_test('<input type="text" name="space_name">')
-      copy_test('<input type="text" name="price_per_night">')
       copy_test('<input type="text" name="description">')
-      # copy_test('<select name="user_id">')
+      copy_test('<input type="text" name="price_per_night">')
+    end
+  end
+
+
+  context 'POST /spaces' do
+    it 'Creates new space record' do
+      @response = post('/spaces', space_name: 'Gherkin', price_per_night: '500.0', description: 'A little corporate')
+
+      # responds_ok?
+      expect(@response.status).to eq(302)
+      expect(Space.last.space_name).to eq('Gherkin')
+      expect(Space.last.description).to eq('A little corporate')
+      # expect(Space.last.price_per_night).to eq('500')
+    end
+  end
+
+  context 'GET /spaces/:id' do
+    it 'Shows a single space' do
+      @response = get('/spaces/2')
+      
+      responds_ok?
+      copy_test('Gherkin')
+      copy_test('£500.0')
+      copy_test('A little corporate')
     end
   end
 

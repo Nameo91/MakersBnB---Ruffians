@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <style>
+        body {background-color: #878f99;}
+        h1   {color: 3e4444;}
+        p    {color: 3e4444;} 
+        p {font-style: italic;}
+    </style>
+        <title>Add Space</title>
+        <link rel="stylesheet" href="/style.css" >
+    </head>
+    <body>
+        <h1>Add a new space</h1>
+        <form method="POST" action="/spaces">
+        <label>Space name:</label><input type="text" name="space_name"><br><br>
+        <label>Description:</label><input type="text" name="description"><br><br>
+        <label>Price:</label><input type="text" name="price_per_night"><br><br>
+        <input type="submit" value="Submit"><br>
+
+        <a href= "../"> Home</a><br>
+        <a href= "/spaces"> Check out spaces to stay</a><br>
+        
+    </body>
+</html>
