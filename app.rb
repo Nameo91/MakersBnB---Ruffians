@@ -1,9 +1,9 @@
 require 'sinatra/base'
 require 'sinatra/reloader'
 require 'sinatra/activerecord'
-require 'user'
-require 'space'
-require 'request'
+require_relative 'lib/user'
+require_relative 'lib/space'
+require_relative 'lib/request'
 
 class Application < Sinatra::Base
   configure :development do
@@ -15,15 +15,15 @@ class Application < Sinatra::Base
   end
 
   get '/spaces' do
-    #returns a page with a list of all spaces
-    #n.b. future task return just first 10 spaces
+    @spaces = Space.all
+    return erb(:spaces)
   end
 
   get '/space/new' do
     #returns the form page for creating a new space
   end
 
-  post '/space' do
+  post '/spaces' do
     #adds a new space to the spaces page
   end
 end
