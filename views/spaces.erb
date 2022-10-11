@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html>
     <head>
+      <style>
+        body {background-color: #878f99;}
+        h1   {color: 3e4444;}
+        p    {color: 3e4444;} 
+        p {font-style: italic;}
+    </style>
         <!--
             Head to https://github.com/makersacademy/web-applications/blob/main/pills/loading_css_or_static_files.md
             If you're wondering how the CSS file below is being loaded.
@@ -14,5 +20,8 @@
         <p>£<%= space.price_per_night %></p>
         <p><%= space.description%></p>
         <% end %>
+
+         <a href= "../"> Home</a><br>
+         <a href= "/spaces/new"> Advertise a space</a>
     </head>
 </html>

@@ -20,6 +20,13 @@ class Application < Sinatra::Base
     return erb(:spaces)
   end
 
+  get '/spaces/:id' do
+  
+    @space = Space.find_by space_name: :space_name
+   
+    return erb(:space_name)
+  end
+
   get '/spaces/new' do
     return erb(:add_space)
   end
