@@ -16,7 +16,7 @@
         <h2>Description: <%= @space.description %></h2>
         <p>Price per night: £<%= @space.price_per_night %>0</p>
 
-        <form method="POST" action="/request_submitted">
+        <form method="POST" action="/spaces/<%= @space.id %>">
         <label for="start">Start Date:</label>
         <input type="date" id="start" name="start_date"
             value="2022-10-12"
@@ -27,6 +27,8 @@
             value="2022-10-12"
             min="2022-10-12" max="2023-12-31"> <br>
         <input type="submit" value="Submit"><br><br>
+
+        <input type="private" name="space_id">
 
         <a href= "../.."> Home</a><br>
         <a href= ".."> Back to all spaces</a><br>

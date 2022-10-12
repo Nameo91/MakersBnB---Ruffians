@@ -41,7 +41,7 @@ class Application < Sinatra::Base
   get '/spaces/new' do
     # add logic to bar access if not logged in
     @user = session[:user]
-    return erb(:add_spac, :layout => :layout)
+    return erb(:add_space, :layout => :layout)
   end
 
   get '/calendar_test' do
@@ -50,12 +50,6 @@ class Application < Sinatra::Base
 
   get '/request_submitted' do
     return erb(:request_submitted)
-  end
-
-  get '/spaces/:id' do
-    @space = Space.find(params[:id])
-    @user = session[:user]
-    return erb(:space_id, :layout => :layout)
   end
 
   post '/spaces' do
@@ -67,14 +61,26 @@ class Application < Sinatra::Base
     redirect '/spaces'
   end
 
+  get '/spaces/:id' do
+    @space = Space.find(params[:id])
+    @user = session[:user]
+    return erb(:space_id, :layout => :layout)
+  end
+
   post '/spaces/:id' do
-    p Request
-    p params[
-    ]
-    new_request = Request.create!(
+    space_id = params[:id]
+    # if !!session[:user_id]
+    Request.create(
       start_date: params[:start_date],
-      end_date: params[:end_date]
+      end_date: params[:end_date],
+      user_id: params[:user_id],
+      space_id: space_id
     )
+    # end
+  end
+
+  get '/request_submitted' do
+    return erb(:request_submitted)
   end
 
   post '/signup' do
@@ -90,7 +96,7 @@ class Application < Sinatra::Base
     
     if !!@new_user.save
       redirect '/login'
-    else
+      else
       return erb(:signup_errors)
     end
   end
