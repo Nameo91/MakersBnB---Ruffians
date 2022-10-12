@@ -13,32 +13,41 @@ class Application < Sinatra::Base
   end
 
   get '/' do
-
-    return erb(:index)
+    @user = session[:user]
+    return erb(:index, :layout => :layout)
   end
 
   get '/signup' do
-
-    return erb(:signup)
+    # needs logic to bar entry to page if user session is active
+    @user = session[:user]
+    return erb(:signup, :layout => :layout)
   end
 
   get '/login' do
+    @user = session[:user]
+    return erb(:login, :layout => :layout)
+  end
 
-    return erb(:login)
+  get '/logout' do
+    session.clear  
   end
 
   get '/spaces' do
     @spaces = Space.all
-    return erb(:spaces)
+    @user = session[:user]
+    return erb(:spaces, :layout => :layout)
   end
 
   get '/spaces/new' do
-    return erb(:add_space)
+    # add logic to bar access if not logged in
+    @user = session[:user]
+    return erb(:add_spac, :layout => :layout)
   end
 
   get '/spaces/:id' do
     @space = Space.find(params[:id])
-    return erb(:space_name)
+    @user = session[:user]
+    return erb(:space_name, :layout => :layout)
   end
 
   post '/spaces' do
@@ -76,6 +85,7 @@ class Application < Sinatra::Base
 
     if @user && @user.authenticate(@password)
       session[:user_id] = @user.id
+      session[:user] = @user
 
       redirect '/'
     else 

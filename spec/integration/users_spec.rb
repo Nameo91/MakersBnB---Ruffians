@@ -19,6 +19,7 @@ RSpec.describe Application do
   # you can duplicate this test file to create a new one.
   before :each do
     user = User.create(
+      id: 1,
       first_name: 'Calum', 
       last_name: 'Wilmot', 
       username: 'Cal', 
@@ -48,8 +49,7 @@ RSpec.describe Application do
 
   context 'POST /signup' do
     it 'should creates a new user record' do
-      @response = post('/signup')
-      new_user = User.create(
+      response = post('/signup',
         first_name: 'Narae', 
         last_name: 'Kim', 
         username: 'nana', 
@@ -58,16 +58,16 @@ RSpec.describe Application do
         password: 'abcde12345',
         password_confirmation: 'abcde12345')
 
-      responds_ok?
-      expect(new_user.save).to eq true
+      expect(response.status).to eq(302)
+      expect(User.last.first_name).to eq ('Narae')
+      expect(User.last.email).to eq ('narae41@hotmail.com')
+
     end
 
     it 'should display error messages' do
       @response = post('/signup')
 
-      new_user = User.create()
       responds_ok?
-      expect(new_user.save).to eq false
       copy_test("Password can't be blank")
       copy_test("First name can't be blank")
       copy_test("Password is too short (minimum is 8 characters)")    
@@ -88,11 +88,12 @@ RSpec.describe Application do
 
   context 'POST /login' do
     it 'should let user log in session' do
-      @response = post('/login')
-      user = User.find_by_email('calum@calum.com')
-      
-      expect(user.first_name).to eq ('Calum')
-      responds_ok?   
+      @response = post('/login',
+        email: 'calum@calum.com',
+        password: 'CalumCalum')
+
+      # If it does not login, it does not redirect and returns error messages
+      expect(@response.status).to eq (302)
     end
 
     it 'returns error messages when the user fails to log in' do
