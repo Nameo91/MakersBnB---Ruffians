@@ -1,5 +1,6 @@
 class Requests < ActiveRecord::Migration[7.0]
   def change
+    p 'Migrating'
     create_table :requests do |t|
       t.date :start_date
       t.date :end_date

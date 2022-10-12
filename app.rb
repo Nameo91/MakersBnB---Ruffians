@@ -58,14 +58,15 @@ class Application < Sinatra::Base
     redirect '/spaces'
   end
 
-  # post '/spaces/:id' do
-  #   new_request = Request.create!(
-  #     start_date: params[:start_date]
-  #     end_date: params[:end_date]
-  #     user_id: params[:user_id]
-  #     space_id: params[:space_id]
-  #   )
-  # end
+  post '/spaces/:id' do
+    p Request
+    p params[
+    ]
+    new_request = Request.create!(
+      start_date: params[:start_date],
+      end_date: params[:end_date]
+    )
+  end
 
   post '/signup' do
     @new_user = User.create(

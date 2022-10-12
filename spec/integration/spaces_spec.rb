@@ -88,7 +88,7 @@ describe Application do
 
   context 'POST /spaces/:id' do
     it 'Creates a new date request' do
-      @response = post('/spaces/:id', start_date: '2022-10-12', end_date: '2022-10-19', user_id: '1', space_id: '1')
+      @response = post('/spaces/:id', start_date: '2022-10-12', end_date: '2022-10-19')
 
       responds_ok?
       expect(Request.last.start_date).to eq('2022-10-12')
