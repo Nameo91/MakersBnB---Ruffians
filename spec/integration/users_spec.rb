@@ -45,6 +45,13 @@ RSpec.describe Application do
       copy_test("<input type='password' name='password_confirmation'>")
       copy_test("<input type='submit' value='Signup'>")
     end
+
+    it 'returns an error message if the user is logged in' do
+      @response = get('/signup')
+      @user = session[:user]
+      responds_ok?
+      copy_test("You are already Logged in - you can't sign up again!")
+    end
   end
 
   context 'POST /signup' do

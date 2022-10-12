@@ -37,7 +37,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_10_142920) do
     t.string "email"
     t.string "mobile_number"
     t.string "password_digest"
-    t.integer "request_id"
   end
 
 end

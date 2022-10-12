@@ -20,6 +20,9 @@ class Application < Sinatra::Base
   get '/signup' do
     # needs logic to bar entry to page if user session is active
     @user = session[:user]
+    if !!session[:user]
+      return erb(:logged_in_error, :layout => :layout)
+    end
     return erb(:signup, :layout => :layout)
   end
 
@@ -41,7 +44,7 @@ class Application < Sinatra::Base
   get '/spaces/new' do
     # add logic to bar access if not logged in
     @user = session[:user]
-    return erb(:add_spac, :layout => :layout)
+    return erb(:add_space, :layout => :layout)
   end
 
   get '/calendar_test' do
