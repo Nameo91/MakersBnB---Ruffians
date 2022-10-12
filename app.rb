@@ -55,12 +55,6 @@ class Application < Sinatra::Base
     return erb(:request_submitted)
   end
 
-  get '/spaces/:id' do
-    @space = Space.find(params[:id])
-    @user = session[:user]
-    return erb(:space_id, :layout => :layout)
-  end
-
   post '/spaces' do
     Space.create!(
       space_name: params[:space_name],
@@ -70,14 +64,32 @@ class Application < Sinatra::Base
     redirect '/spaces'
   end
 
+  get '/spaces/:id' do
+    @space = Space.find(params[:id])
+    @user = session[:user]
+    return erb(:space_id, :layout => :layout)
+  end
+
   post '/spaces/:id' do
-    p Request
-    p params[
-    ]
-    new_request = Request.create!(
+    space_id = params[:id]
+    if !!session[:user_id]
+    request = Request.create(
       start_date: params[:start_date],
-      end_date: params[:end_date]
+      end_date: params[:end_date],
+      user_id: session[:user_id],
+      space_id: space_id
     )
+      if request.save
+        redirect '/request_submitted'
+      else
+        redirect '/request_error'
+      end
+    end
+  end
+
+  get '/request_submitted' do
+    @user = session[:user]
+    return erb(:request_submitted, :layout => :layout)
   end
 
   post '/signup' do
@@ -93,7 +105,7 @@ class Application < Sinatra::Base
     
     if !!@new_user.save
       redirect '/login'
-    else
+      else
       return erb(:signup_errors)
     end
   end
