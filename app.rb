@@ -29,7 +29,7 @@ class Application < Sinatra::Base
   end
 
   get '/logout' do
-    session.clear
+    session.clear  
   end
 
   get '/spaces' do
