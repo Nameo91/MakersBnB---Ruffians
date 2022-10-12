@@ -13,12 +13,11 @@ class Application < Sinatra::Base
   end
 
   get '/' do
-
+    display_active_user
     return erb(:index)
   end
 
   get '/signup' do
-
     return erb(:signup)
   end
 
@@ -81,6 +80,17 @@ class Application < Sinatra::Base
     else 
 
       return erb(:login_error)
+    end
+  end
+
+  def display_active_user
+    if !!session[:user_id]
+
+      user = User.find_by_id(session[:user_id])
+      # session[:user_id][:user] = user
+      @active_user = user.username
+    else
+      @active_user = "Nobody's logged in!"
     end
   end
 end
