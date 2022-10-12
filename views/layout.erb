@@ -1,0 +1,14 @@
+<% if @user %>
+<div> 
+  Username: <%= @user[:username] %>
+</div>
+  <div>
+    <a href="/logout">log out</a>
+  </div>
+<% else %>
+<div> 
+  There's nobody logged in! <a href="/login">login</a> or <a href="/signup">sign up!</a>
+</div> 
+<% end %>
+
+<%= yield %>
