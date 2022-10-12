@@ -36,9 +36,17 @@ class Application < Sinatra::Base
     return erb(:add_space)
   end
 
+  get '/calendar_test' do
+    return erb(:calendar_test)
+  end
+
+  get '/request_submitted' do
+    return erb(:request_submitted)
+  end
+
   get '/spaces/:id' do
     @space = Space.find(params[:id])
-    return erb(:space_name)
+    return erb(:space_id)
   end
 
   post '/spaces' do
@@ -49,6 +57,15 @@ class Application < Sinatra::Base
     )
     redirect '/spaces'
   end
+
+  # post '/spaces/:id' do
+  #   new_request = Request.create!(
+  #     start_date: params[:start_date]
+  #     end_date: params[:end_date]
+  #     user_id: params[:user_id]
+  #     space_id: params[:space_id]
+  #   )
+  # end
 
   post '/signup' do
     @new_user = User.create(
