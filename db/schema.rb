@@ -15,7 +15,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_10_142920) do
   enable_extension "plpgsql"
 
   create_table "requests", force: :cascade do |t|
-    t.date "date"
+    t.date "start_date"
+    t.date "end_date"
     t.boolean "approval_status"
     t.integer "space_id"
     t.integer "user_id"

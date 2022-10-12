@@ -44,10 +44,18 @@ class Application < Sinatra::Base
     return erb(:add_spac, :layout => :layout)
   end
 
+  get '/calendar_test' do
+    return erb(:calendar_test)
+  end
+
+  get '/request_submitted' do
+    return erb(:request_submitted)
+  end
+
   get '/spaces/:id' do
     @space = Space.find(params[:id])
     @user = session[:user]
-    return erb(:space_name, :layout => :layout)
+    return erb(:space_id, :layout => :layout)
   end
 
   post '/spaces' do
@@ -57,6 +65,16 @@ class Application < Sinatra::Base
       price_per_night: params[:price_per_night]
     )
     redirect '/spaces'
+  end
+
+  post '/spaces/:id' do
+    p Request
+    p params[
+    ]
+    new_request = Request.create!(
+      start_date: params[:start_date],
+      end_date: params[:end_date]
+    )
   end
 
   post '/signup' do

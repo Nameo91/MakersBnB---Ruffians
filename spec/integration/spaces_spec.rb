@@ -76,6 +76,24 @@ describe Application do
       copy_test('£500.0')
       copy_test('A little corporate')
     end
+
+    it 'Displays a calendar' do
+      @response = get('/spaces/2')
+      
+      responds_ok?
+      copy_test('Start Date')
+      copy_test('End Date')
+    end
+  end
+
+  context 'POST /spaces/:id' do
+    it 'Creates a new date request' do
+      @response = post('/spaces/:id', start_date: '2022-10-12', end_date: '2022-10-19')
+
+      responds_ok?
+      expect(Request.last.start_date).to eq('2022-10-12')
+      expect(Request.last.end_date).to eq('2022-10-19')
+    end
   end
 
   private
