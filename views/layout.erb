@@ -2,8 +2,9 @@
 <head>
 <style>
     body {
-      background-color: #D9FEF6;
+      background-color: #FFFFFF;
       font-family: "Courier New", Courier, monospace;
+      text-align: center;
       }
     h1   {color: 3e4444;}
     p    {color: 3e4444;} 
@@ -14,27 +15,31 @@
       padding: 0;
       overflow: hidden;
       background-color: black;
-    }
+      }
     
     li {
-      float: left;  
-    }
+      float: right;  
+      }
 
     li a {
       display: block;
       color: white;
       text-align: center;
-      padding: 24px 30px;
+      padding: 20px 28px;
       text-decoration: none;
-    }
+      }
 
-li a:hover:not(.active) {
-  background-color: #111;
-}
+    li a:hover:not(.active) {
+      background-color: #C0C0C0;
+      }
 
-.active {
-  background-color: #FFFFFF;
-}
+    .active {
+      background-color: #C0C0C0;
+      }
+
+    .username{
+      float: right;
+      }
 </style>
 <link rel="stylesheet" href="/style.css" >
 </head>
@@ -47,19 +52,16 @@ li a:hover:not(.active) {
     <li><a href= "/">Home</a></li>
   </ul>
 
-  <div> 
+  <div class="username"> 
     Hello, <%= @user[:username] %>
   </div>
 <% else %>
-<div> 
   <ul>
+    <li><a href= "/">Home</a></li>
+    <li><a href="/spaces">Space</a></li>
     <li><a href="/login">Login</a></li>
     <li><a href="/signup">Sign up</a></li>
-    <li><a href="/spaces">Space</a></li>
-    <li><a href= "/">Home</a></li>
-  </ul>
-  There's nobody logged in! 
-</div> 
+  </ul> 
 <% end %>
 
 <%= yield %>

@@ -6,14 +6,16 @@
 
   <body>
     <h1><%= @space.space_name %></h1>
+    <div>
     <h2>Description: <%= @space.description %></h2>
       <p>Price per night: £<%= @space.price_per_night %>0</p>
       <p>Dates currently booked: <p>
       <% @requests.each do |request| %>
       - <%= request.start_date %> to <%= request.end_date %><br>
       <% end %>
-
-
+      <p>Please, login to make your request!</p>
+    </div>
+    
     <form method="POST" action="/spaces/<%= @space.id %>">
       <h2> Request a booking </h2>
       <label for="start">Start Date:</label>
