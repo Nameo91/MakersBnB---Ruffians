@@ -2,7 +2,6 @@ require "spec_helper"
 require "rack/test"
 require_relative '../../app'
 require 'json'
-require 'factory_bot'
 
 describe Application do
   # This is so we can use rack-test helper methods.
@@ -21,7 +20,6 @@ describe Application do
   before(:each) do
     Space.create(id: 1, space_name: 'Makers HQ', description: 'Awesome', price_per_night: '100.0', user_id: '1', request_id: '1')
     Space.create(id: 2, space_name: 'Gherkin', description: 'A little corporate', price_per_night: '500.0', user_id: '2', request_id: '1')
-
     Request.create(id: 1, start_date: '2022-10-13', end_date: '2022-10-14', space_id: '1', user_id: '1')
     User.create(
       id: 1,  
@@ -110,7 +108,7 @@ describe Application do
   context 'POST /spaces/:id' do
     it 'Checks that signed in user can make request' do
       session_login
-      @response = post('/spaces/:id', id: 2, start_date: '2022/10/12', end_date: '2022/10/19', user_id: 1, space_id: 1)
+      @response = post('/spaces/1', id: 1, start_date: '2022/10/12', end_date: '2022/10/19', user_id: 1, space_id: 1)
       redirect?
       expect(Request.last.start_date.to_s).to eq('2022-10-12')
       # expect(Request.last.end_date).to eq("Wed, 19 Oct 2022")
@@ -118,7 +116,7 @@ describe Application do
 
     xit 'returns error messages if the space has been booked' do
       session_login
-      @response = post('/spaces/:id', id: 3, start_date: '2022/10/12', end_date: '2022/10/19', user_id: 1, space_id: 1)
+      @response = post('/spaces/1', id: 3, start_date: '2022/10/12', end_date: '2022/10/19', user_id: 1, space_id: 1)
       redirect?
       copy_test('Sorry, the space is not available. Please choose other dates!')
     end

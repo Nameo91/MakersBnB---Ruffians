@@ -46,16 +46,16 @@ RSpec.describe Application do
       copy_test("<input type='submit' value='Signup'>")
     end
 
-    xit 'returns an error message if the user is logged in' do
+    it 'returns an error message if the user is logged in' do
+      session_login
       @response = get('/signup')
-      @user = session[:user]
       responds_ok?
       copy_test("You are already Logged in - you can't sign up again!")
     end
   end
 
   context 'POST /signup' do
-    xit 'should creates a new user record' do
+    it 'should creates a new user record' do
       response = post('/signup',
         first_name: 'Narae', 
         last_name: 'Kim', 
@@ -119,5 +119,9 @@ RSpec.describe Application do
 
   def copy_test(text)
     expect(@response.body).to include(text)
+  end
+
+  def session_login
+    post("/login", :email => 'calum@calum.com', :password => 'CalumCalum')
   end
 end

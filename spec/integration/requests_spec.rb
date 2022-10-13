@@ -70,7 +70,7 @@ describe Application do
   end
 
   context 'a requestor with a pending request checks the space in question' do
-    xit 'shows a pending notification below the calendar' do
+    it 'shows a pending notification below the calendar' do
       post("/login", :email => 'tom@tom.com', :password => 'TomTom')
       @response = get('/spaces/1')
 
