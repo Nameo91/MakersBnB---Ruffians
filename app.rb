@@ -65,8 +65,10 @@ class Application < Sinatra::Base
   end
 
   get '/spaces/:id' do
-    @space = Space.find(params[:id])
     @user = session[:user]
+    @space = Space.find(params[:id])
+    @booking = Request.find_by_space_id(@space.id)
+
     return erb(:space_id, :layout => :layout)
   end
 
@@ -127,7 +129,6 @@ class Application < Sinatra::Base
 
       redirect '/'
     else 
-
       return erb(:login_error)
     end
   end

@@ -60,7 +60,7 @@ describe Application do
       expect(Request.last.approval_status).to eq true
     end
 
-    it 'request will show as pending when made by a user other than the space owner' do
+    it 'request will be pending when made by a user other than the space owner' do
       post("/login", :email => 'tom@tom.com', :password => 'TomTom')
       @response = post('/spaces/1', start_date: '2022/10/12', end_date: '2022/10/19', user_id: 2, space_id: 1)
 
@@ -69,7 +69,18 @@ describe Application do
     end
   end
 
-  
+  context 'a requestor with a pending request checks the space in question' do
+    xit 'shows a pending notification below the calendar' do
+      post("/login", :email => 'tom@tom.com', :password => 'TomTom')
+      @response = get('/spaces/1')
+
+      responds_ok?
+
+      copy_test('Your request to book this space from 2022-10-15 to 2022-10-16 is pending approval from the owner')
+    end
+
+
+  end
 private
 
   def responds_ok?
