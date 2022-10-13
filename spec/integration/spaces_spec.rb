@@ -2,10 +2,12 @@ require "spec_helper"
 require "rack/test"
 require_relative '../../app'
 require 'json'
+require 'factory_bot'
 
 describe Application do
   # This is so we can use rack-test helper methods.
   include Rack::Test::Methods
+  # include Rack::Test::Session
 
   # We need to declare the `app` value by instantiating the Application
   # class so our tests work.
@@ -19,6 +21,7 @@ describe Application do
   before(:each) do
     Space.create(id: 1, space_name: 'Makers HQ', description: 'Awesome', price_per_night: '100.0', user_id: '1', request_id: '1')
     Space.create(id: 2, space_name: 'Gherkin', description: 'A little corporate', price_per_night: '500.0', user_id: '2', request_id: '1')
+
     Request.create(id: 1, start_date: '2022-10-13', end_date: '2022-10-14', space_id: '1', user_id: '1')
     User.create(
       id: 1,  
@@ -70,7 +73,7 @@ describe Application do
       @response = post('/spaces', space_name: 'Gherkin', price_per_night: '500.0', description: 'A little corporate')
 
       # responds_ok?
-      expect(@response.status).to eq(302)
+      redirect?
       expect(Space.last.space_name).to eq('Gherkin')
       expect(Space.last.description).to eq('A little corporate')
       # expect(Space.last.price_per_night).to eq('500')
@@ -87,12 +90,37 @@ describe Application do
       copy_test('A little corporate')
     end
 
-    it 'Displays a calendar' do
-      @response = get('/spaces/2')
+    it 'Displays a calendar that blocks any date before today' do
+      @response = get('/spaces/1')
       
       responds_ok?
       copy_test('Start Date')
       copy_test('End Date')
+    end
+
+    it 'Displays dates the space is already booked for' do
+      @response = get('/spaces/1')
+      responds_ok?
+      copy_test('Start Date')
+      copy_test('End Date')
+      copy_test('2022-10-13 to 2022-10-14')
+    end
+  end
+
+  context 'POST /spaces/:id' do
+    it 'Checks that signed in user can make request' do
+      session_login
+      @response = post('/spaces/:id', id: 2, start_date: '2022/10/12', end_date: '2022/10/19', user_id: 1, space_id: 1)
+      redirect?
+      expect(Request.last.start_date.to_s).to eq('2022-10-12')
+      # expect(Request.last.end_date).to eq("Wed, 19 Oct 2022")
+    end
+
+    xit 'returns error messages if the space has been booked' do
+      session_login
+      @response = post('/spaces/:id', id: 3, start_date: '2022/10/12', end_date: '2022/10/19', user_id: 1, space_id: 1)
+      redirect?
+      copy_test('Sorry, the space is not available. Please choose other dates!')
     end
   end
 
@@ -102,7 +130,15 @@ describe Application do
     expect(@response.status).to eq(200)
   end
 
+  def redirect?
+    expect(@response.status).to eq(302)
+  end
+ 
   def copy_test(text)
     expect(@response.body).to include(text)
+  end
+
+  def session_login
+    post("/login", :email => 'calum@calum.com', :password => 'CalumCalum')
   end
 end

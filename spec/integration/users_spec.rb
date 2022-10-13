@@ -55,7 +55,7 @@ RSpec.describe Application do
   end
 
   context 'POST /signup' do
-    it 'should creates a new user record' do
+    xit 'should creates a new user record' do
       response = post('/signup',
         first_name: 'Narae', 
         last_name: 'Kim', 
@@ -120,5 +120,4 @@ RSpec.describe Application do
   def copy_test(text)
     expect(@response.body).to include(text)
   end
-
 end
