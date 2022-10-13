@@ -66,8 +66,9 @@ class Application < Sinatra::Base
   end
 
   get '/spaces/:id' do
-    @date = DateTime.now.strftime("%Y-%m-%d").to_s
+    @date = DateTime.now.strftime("%Y-%m-%d")
     @space = Space.find(params[:id])
+    @requests = Request.all
     @user = session[:user]
     return erb(:space_id, :layout => :layout)
   end
@@ -140,4 +141,13 @@ class Application < Sinatra::Base
       return erb(:login_error)
     end
   end
-end
+
+    private 
+
+    def string_to_date(x)
+      to_date = Date.strptime(x, '%Y-%m-%d')
+      from_date = to_date.strftime('%d %B %Y')
+      from_date
+    end
+  end
+

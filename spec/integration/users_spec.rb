@@ -120,5 +120,4 @@ RSpec.describe Application do
   def copy_test(text)
     expect(@response.body).to include(text)
   end
-
 end
