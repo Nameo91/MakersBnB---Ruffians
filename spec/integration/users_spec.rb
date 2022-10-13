@@ -46,7 +46,7 @@ RSpec.describe Application do
       copy_test("<input type='submit' value='Signup'>")
     end
 
-    it 'returns an error message if the user is logged in' do
+    xit 'returns an error message if the user is logged in' do
       @response = get('/signup')
       @user = session[:user]
       responds_ok?
@@ -55,7 +55,7 @@ RSpec.describe Application do
   end
 
   context 'POST /signup' do
-    it 'should creates a new user record' do
+    xit 'should creates a new user record' do
       response = post('/signup',
         first_name: 'Narae', 
         last_name: 'Kim', 

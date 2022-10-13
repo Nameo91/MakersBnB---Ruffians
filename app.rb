@@ -4,6 +4,7 @@ require 'sinatra/activerecord'
 require_relative 'lib/user'
 require_relative 'lib/space'
 require_relative 'lib/request'
+require 'date'
 
 class Application < Sinatra::Base
   enable :sessions
@@ -65,6 +66,7 @@ class Application < Sinatra::Base
   end
 
   get '/spaces/:id' do
+    @date = DateTime.now.strftime("%Y-%m-%d").to_s
     @space = Space.find(params[:id])
     @user = session[:user]
     return erb(:space_id, :layout => :layout)
@@ -72,17 +74,30 @@ class Application < Sinatra::Base
 
   post '/spaces/:id' do
     space_id = params[:id]
-    if !!session[:user_id]
-    request = Request.create(
-      start_date: params[:start_date],
-      end_date: params[:end_date],
-      user_id: session[:user_id],
-      space_id: space_id
-    )
-      if request.save
-        redirect '/request_submitted'
-      else
-        redirect '/request_error'
+    # if !!Request.space_id.approval_status
+    #   start_date_confirmed = Request.space_id.start_date
+    #   end_date_confirmed = Request.space_id.end_date
+    # end
+    
+    # def availability?
+    #   !(params[:start_date] >= start_date_confirmed && params[:start_date] <= end_date_confirmed)
+    # end
+
+    
+
+    if !!session[:user_id] 
+      if params[:start_date] && #>= params[:end_date] && params[:start_date] 
+        request = Request.create(
+          start_date: params[:start_date],
+          end_date: params[:end_date],
+          user_id: session[:user_id],
+          space_id: space_id
+      )
+        if request.save
+          redirect '/request_submitted'
+        else
+          redirect '/request_error'
+        end
       end
     end
   end
@@ -122,7 +137,6 @@ class Application < Sinatra::Base
 
       redirect '/'
     else 
-
       return erb(:login_error)
     end
   end
