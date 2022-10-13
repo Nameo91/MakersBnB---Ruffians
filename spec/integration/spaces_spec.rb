@@ -20,15 +20,15 @@ describe Application do
     Space.create(id: 1, space_name: 'Makers HQ', description: 'Awesome', price_per_night: '100.0', user_id: '1', request_id: '1')
     Space.create(id: 2, space_name: 'Gherkin', description: 'A little corporate', price_per_night: '500.0', user_id: '2', request_id: '1')
     Request.create(id: 1, start_date: '2022-10-13', end_date: '2022-10-14', space_id: '1', user_id: '1')
-    # User.create(
-    #   id: 1,  
-    #   first_name: 'Calum', 
-    #   last_name: 'Wilmot', 
-    #   username: 'Cal', 
-    #   email: 'calum@calum.com', 
-    #   mobile_number: '11111111111', 
-    #   password: 'CalumCalum', 
-    #   password_confirmation: 'CalumCalum')
+    User.create(
+      id: 1,  
+      first_name: 'Calum', 
+      last_name: 'Wilmot', 
+      username: 'Cal', 
+      email: 'calum@calum.com', 
+      mobile_number: '11111111111', 
+      password: 'CalumCalum', 
+      password_confirmation: 'CalumCalum')
   end
 
   context 'GET /' do
@@ -93,17 +93,6 @@ describe Application do
       responds_ok?
       copy_test('Start Date')
       copy_test('End Date')
-    end
-  end
-
-  context 'POST /spaces/:id' do
-    it 'Creates a new date request' do
-      @response = post('/spaces/:id', start_date: '2022/10/12', end_date: '2022/10/19', user_id: 1, space_id: 1)
-      
-      responds_ok?
-      expect(Request.last.start_date.to_s).to eq('2022-10-12')
-      # expect(Request.last.end_date).to eq("Wed, 19 Oct 2022")
-      
     end
   end
 

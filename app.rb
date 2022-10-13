@@ -72,18 +72,23 @@ class Application < Sinatra::Base
 
   post '/spaces/:id' do
     space_id = params[:id]
-    if !!session[:user_id]
+    unless !!session[:user_id]
+      redirect '/request_error'
+    end
     request = Request.create(
       start_date: params[:start_date],
       end_date: params[:end_date],
       user_id: session[:user_id],
       space_id: space_id
     )
-      if request.save
-        redirect '/request_submitted'
-      else
-        redirect '/request_error'
+      space = Space.find(space_id)
+      if session[:user_id] == space.user_id
+        request.approval_status = true
       end
+    if request.save
+      redirect '/request_submitted'
+    else
+      redirect '/request_error'
     end
   end
 
