@@ -26,3 +26,5 @@ group :test do
     gem "database_cleaner"
 end
 gem "pry", "~> 0.14.1"
+
+gem "factory_bot", "~> 6.2"
