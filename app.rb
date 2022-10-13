@@ -70,36 +70,30 @@ class Application < Sinatra::Base
     @space = Space.find(params[:id])
     @requests = Request.all
     @user = session[:user]
+    @booking = Request.find_by_space_id(@space.id)
+
     return erb(:space_id, :layout => :layout)
   end
 
   post '/spaces/:id' do
     space_id = params[:id]
-    # if !!Request.space_id.approval_status
-    #   start_date_confirmed = Request.space_id.start_date
-    #   end_date_confirmed = Request.space_id.end_date
-    # end
-    
-    # def availability?
-    #   !(params[:start_date] >= start_date_confirmed && params[:start_date] <= end_date_confirmed)
-    # end
-
-    
-
-    if !!session[:user_id] 
-      if params[:start_date] && #>= params[:end_date] && params[:start_date] 
-        request = Request.create(
-          start_date: params[:start_date],
-          end_date: params[:end_date],
-          user_id: session[:user_id],
-          space_id: space_id
-      )
-        if request.save
-          redirect '/request_submitted'
-        else
-          redirect '/request_error'
-        end
+    unless !!session[:user_id]
+      redirect '/request_error'
+    end
+    request = Request.create(
+      start_date: params[:start_date],
+      end_date: params[:end_date],
+      user_id: session[:user_id],
+      space_id: space_id
+    )
+      space = Space.find(space_id)
+      if session[:user_id] == space.user_id
+        request.approval_status = true
       end
+    if request.save
+      redirect '/request_submitted'
+    else
+      redirect '/request_error'
     end
   end
 
