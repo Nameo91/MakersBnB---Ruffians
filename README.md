@@ -30,8 +30,8 @@ rake db:create
 
 rake db:migrate
 
+# To create test database
 rake db:migrate RACK_ENV=test
-# rack db:migrate RACK_ENV=production?
 
 # Run tests
 rspec
@@ -44,4 +44,15 @@ rackup
 
 ## Testing & Code clarity
 - Rubocopped*
-- Fully tested, 95% pass completion*
+- Test coverage probably* great
+- (we haven't checked)
+
+
+## Further Development Roadmap
+- Proper pass for test coverage, thorough refactor
+
+- Request Approve/Deny functionality
+- Email and SMS notifications
+- Block double-booking of Spaces
+- Payment system
+- Inline chat between Space owner/customer

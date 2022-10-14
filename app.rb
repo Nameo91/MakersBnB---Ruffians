@@ -32,7 +32,7 @@ class Application < Sinatra::Base
   get '/login' do
     if login?
       @user = session[:user]
-      
+
       return erb(:logged_in_error)
     end
 
@@ -40,8 +40,8 @@ class Application < Sinatra::Base
   end
 
   get '/logout' do
-    session.clear 
-    
+    session.clear
+
     redirect '/'
   end
 
@@ -63,59 +63,48 @@ class Application < Sinatra::Base
   end
 
   get '/spaces/:id' do
-    @date = DateTime.now.strftime("%Y-%m-%d")
+    @date = DateTime.now.strftime('%Y-%m-%d')
     @space = Space.find(params[:id])
     @requests = Request.all
     @user = session[:user]
     @booking = Request.find_by_space_id(@space.id)
 
-    return erb(:space_id, :layout => :layout)
+    return erb(:space_id, layout: :layout)
   end
 
   get '/request_submitted' do
     @user = session[:user]
-    
+
     return erb(:request_submitted)
   end
 
   get '/request_error' do
-    
     return
   end
 
   post '/spaces' do
     @user = session[:user]
-    @space = Space.create(
-      space_name: params[:space_name],
-      description: params[:description],
-      image: params[:image],
-      price_per_night: params[:price_per_night],
-      user_id: session[:user_id]
-    )
-    
-    if !!(@space.save)
-    redirect '/spaces'
+    @space = space
+
+    if !!@space.save
+      redirect '/spaces'
     else
 
-    return erb(:new_space_error)
+      return erb(:new_space_error)
     end
   end
 
   post '/spaces/:id' do
     space_id = params[:id]
-    unless !!session[:user_id]
-      redirect '/request_error'
-    end
+    redirect '/request_error' unless !!session[:user_id]
     request = Request.create(
       start_date: params[:start_date],
       end_date: params[:end_date],
       user_id: session[:user_id],
       space_id: space_id
     )
-      space = Space.find(space_id)
-      if session[:user_id] == space.user_id
-        request.approval_status = true
-      end
+    space = Space.find(space_id)
+    request.approval_status = true if session[:user_id] == space.user_id
     request.save ? (redirect '/request_submitted') : (redirect '/request_error')
   end
 
@@ -134,7 +123,7 @@ class Application < Sinatra::Base
       session[:user] = @user
 
       redirect '/'
-    else 
+    else
       return erb(:login_error)
     end
   end
@@ -153,7 +142,7 @@ class Application < Sinatra::Base
     )
   end
 
-  def new_space
+  def space
     Space.create(
       space_name: params[:space_name],
       description: params[:description],
@@ -163,7 +152,7 @@ class Application < Sinatra::Base
     )
   end
 
-  def login? 
+  def login?
     !!session[:user]
   end
 
@@ -172,9 +161,6 @@ class Application < Sinatra::Base
     start_date_check = params[:start_date].between?(request[:start_date], request[:end_date])
     end_date_check = params[:end_date].between?(request[:start_date], request[:end_date])
 
-    if request && start_date_check || end_date_check
-      return false
-    end
+    return false if request && start_date_check || end_date_check
   end
 end
-
