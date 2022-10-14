@@ -4,19 +4,10 @@ require_relative '../../app'
 require 'json'
 
 describe Application do
-  # This is so we can use rack-test helper methods.
   include Rack::Test::Methods
-  # include Rack::Test::Session
 
-  # We need to declare the `app` value by instantiating the Application
-  # class so our tests work.
   let(:app) { Application.new }
 
-  # Write your integration tests below.
-  # If you want to split your integration tests
-  # accross multiple RSpec files (for example, have
-  # one test suite for each set of related features),
-  # you can duplicate this test file to create a new one.
   before(:each) do
     Space.create(id: 1, space_name: 'Makers HQ', description: 'Awesome', image: 'space1_image_url', price_per_night: '100.0', user_id: '1', request_id: '1')
     Space.create(id: 2, space_name: 'Gherkin', description: 'A little corporate', image: 'space2_image_url', price_per_night: '500.0', user_id: '2', request_id: '1')
@@ -65,7 +56,6 @@ describe Application do
       copy_test('<input type="text" name="price_per_night">')
     end
   end
-
 
   context 'POST /spaces' do
     it 'Creates new space record' do
@@ -120,16 +110,9 @@ describe Application do
     it 'Checks that signed in user can make request' do
       session_login
       @response = post('/spaces/1', id: 1, start_date: '2022/10/12', end_date: '2022/10/19', user_id: 1, space_id: 1)
+      
       redirect?
       expect(Request.last.start_date.to_s).to eq('2022-10-12')
-      # expect(Request.last.end_date).to eq("Wed, 19 Oct 2022")
-    end
-
-    xit 'returns error messages if the space has been booked' do
-      session_login
-      @response = post('/spaces/1', id: 3, start_date: '2022/10/12', end_date: '2022/10/19', user_id: 1, space_id: 1)
-      redirect?
-      copy_test('Sorry, the space is not available. Please choose other dates!')
     end
   end
 

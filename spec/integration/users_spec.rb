@@ -5,18 +5,11 @@ require 'json'
 require_relative '../../lib/user.rb'
 
 RSpec.describe Application do
-  # This is so we can use rack-test helper methods.
+
   include Rack::Test::Methods
 
-  # We need to declare the `app` value by instantiating the Application
-  # class so our tests work.
   let(:app) { Application.new }
 
-  # Write your integration tests below.
-  # If you want to split your integration tests
-  # accross multiple RSpec files (for example, have
-  # one test suite for each set of related features),
-  # you can duplicate this test file to create a new one.
   before :each do
     user = User.create(
       id: 1,
@@ -49,6 +42,7 @@ RSpec.describe Application do
     it 'returns an error message if the user is logged in' do
       session_login
       @response = get('/signup')
+
       responds_ok?
       copy_test("You are already Logged in - you can't sign up or login again!")
     end
@@ -99,7 +93,6 @@ RSpec.describe Application do
         email: 'calum@calum.com',
         password: 'CalumCalum')
 
-      # If it does not login, it does not redirect and returns error messages
       expect(@response.status).to eq (302)
     end
 

@@ -22,7 +22,7 @@ class Application < Sinatra::Base
   get '/signup' do
     if login?
       @user = session[:user]
-      
+
       return erb(:logged_in_error)
     end
 
@@ -55,6 +55,7 @@ class Application < Sinatra::Base
   get '/spaces/new' do
     if login?
       @user = session[:user]
+
       return erb(:add_space)
     end
 
@@ -115,35 +116,17 @@ class Application < Sinatra::Base
       if session[:user_id] == space.user_id
         request.approval_status = true
       end
-    if request.save
-      redirect '/request_submitted'
-    else
-      redirect '/request_error'
-    end
+    request.save ? (redirect '/request_submitted') : (redirect '/request_error')
   end
 
   post '/signup' do
-    @new_user = User.create(
-      first_name: params[:first_name],
-      last_name: params[:last_name],
-      username: params[:username],
-      email: params[:email],
-      mobile_number: params[:mobile_number],
-      password: params[:password],
-      password_confirmation: params[:password_confirmation]
-    )
-    
-    if !!@new_user.save
-      redirect '/login'
-    else
-      return erb(:signup_errors)
-    end
+    @new_user = new_user
+    !!@new_user.save ? (redirect '/login') : (return erb(:signup_errors))
   end
 
   post '/login' do
     @email = params[:email]
     @password = params[:password]
-
     @user = User.find_by_email(@email)
 
     if @user && @user.authenticate(@password)
@@ -154,6 +137,30 @@ class Application < Sinatra::Base
     else 
       return erb(:login_error)
     end
+  end
+
+  private
+
+  def new_user
+    User.create(
+      first_name: params[:first_name],
+      last_name: params[:last_name],
+      username: params[:username],
+      email: params[:email],
+      mobile_number: params[:mobile_number],
+      password: params[:password],
+      password_confirmation: params[:password_confirmation]
+    )
+  end
+
+  def new_space
+    Space.create(
+      space_name: params[:space_name],
+      description: params[:description],
+      image: params[:image],
+      price_per_night: params[:price_per_night],
+      user_id: session[:user_id]
+    )
   end
 
   def login? 
@@ -168,13 +175,6 @@ class Application < Sinatra::Base
     if request && start_date_check || end_date_check
       return false
     end
-  end
-
-  private 
-
-  def string_to_date(x)
-      to_date = Date.strptime(x, '%Y-%m-%d')
-      from_date = to_date.strftime('%d %B %Y')
   end
 end
 

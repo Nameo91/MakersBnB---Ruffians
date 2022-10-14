@@ -4,18 +4,28 @@ require_relative '../../app'
 require 'json'
 require_relative '../../lib/user.rb'
 
-
 describe Application do
-  # This is so we can use rack-test helper methods.
   include Rack::Test::Methods
 
-  # We need to declare the `app` value by instantiating the Application
-  # class so our tests work.
   let(:app) { Application.new }
 
     before(:each) do
-    Space.create(id: 1, space_name: 'Makers HQ', description: 'Awesome', image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQup-GHifQfwYZRp7tVpByvyVxckoexLyIbNg&usqp=CAU", price_per_night: '100.0', user_id: '1', request_id: '1')
-    Space.create(id: 2, space_name: 'Gherkin', description: 'A little corporate', image: "https://assets.big-cottages.com/assets/home/hp-hero-1_m-0b1c4c41fc7b3d547fff14e3cc386f59a56f37688d9feca829564e7a51548554.jpg", price_per_night: '500.0', user_id: '2', request_id: '1')
+    Space.create(id: 1,
+      space_name: 'Makers HQ',
+      description: 'Awesome',
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQup-GHifQfwYZRp7tVpByvyVxckoexLyIbNg&usqp=CAU",
+      price_per_night: '100.0',
+      user_id: '1',
+      request_id: '1'
+    )
+    Space.create(id: 2,
+      space_name: 'Gherkin',
+      description: 'A little corporate',
+      image: "https://assets.big-cottages.com/assets/home/hp-hero-1_m-0b1c4c41fc7b3d547fff14e3cc386f59a56f37688d9feca829564e7a51548554.jpg",
+      price_per_night: '500.0',
+      user_id: '2',
+      request_id: '1'
+    )
     Request.create(id: 1, start_date: '2022-10-13', end_date: '2022-10-14', space_id: '1', user_id: '1')
     Request.create(id: 2, start_date: '2022-10-15', end_date: '2022-10-16', space_id: '1', user_id: '2')
     User.create(
@@ -26,7 +36,8 @@ describe Application do
       email: 'calum@calum.com', 
       mobile_number: '11111111111', 
       password: 'CalumCalum', 
-      password_confirmation: 'CalumCalum')
+      password_confirmation: 'CalumCalum'
+    )
     User.create(
       id: 2,  
       first_name: 'tom', 
@@ -35,8 +46,8 @@ describe Application do
       email: 'tom@tom.com', 
       mobile_number: '11111111112', 
       password: 'TomTom', 
-      password_confirmation: 'TomTom')
-    
+      password_confirmation: 'TomTom'
+    )
   end
 
   context 'POST /spaces/:id' do 
@@ -46,8 +57,6 @@ describe Application do
       
       expect(@response.status).to eq(302)
       expect(Request.last.start_date.to_s).to eq('2022-10-12')
-      # expect(Request.last.end_date).to eq("Wed, 19 Oct 2022")
-      
     end
   end
 
@@ -78,5 +87,4 @@ private
   def copy_test(text)
     expect(@response.body).to include(text)
   end
-
 end
