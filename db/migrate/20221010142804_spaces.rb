@@ -1,6 +1,6 @@
 class Spaces < ActiveRecord::Migration[7.0]
   def change
-    create_table :spaces do |t| 
+    create_table :spaces do |t|
       t.string :space_name
       t.text :description
       t.money :price_per_night

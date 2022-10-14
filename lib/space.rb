@@ -5,4 +5,4 @@ class Space < ActiveRecord::Base
 
   has_many :requests
   belongs_to :users
-end 
+end
