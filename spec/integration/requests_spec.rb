@@ -14,8 +14,8 @@ describe Application do
   let(:app) { Application.new }
 
     before(:each) do
-    Space.create(id: 1, space_name: 'Makers HQ', description: 'Awesome', price_per_night: '100.0', user_id: '1', request_id: '1')
-    Space.create(id: 2, space_name: 'Gherkin', description: 'A little corporate', price_per_night: '500.0', user_id: '2', request_id: '1')
+    Space.create(id: 1, space_name: 'Makers HQ', description: 'Awesome', image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQup-GHifQfwYZRp7tVpByvyVxckoexLyIbNg&usqp=CAU", price_per_night: '100.0', user_id: '1', request_id: '1')
+    Space.create(id: 2, space_name: 'Gherkin', description: 'A little corporate', image: "https://assets.big-cottages.com/assets/home/hp-hero-1_m-0b1c4c41fc7b3d547fff14e3cc386f59a56f37688d9feca829564e7a51548554.jpg", price_per_night: '500.0', user_id: '2', request_id: '1')
     Request.create(id: 1, start_date: '2022-10-13', end_date: '2022-10-14', space_id: '1', user_id: '1')
     Request.create(id: 2, start_date: '2022-10-15', end_date: '2022-10-16', space_id: '1', user_id: '2')
     User.create(
@@ -39,10 +39,10 @@ describe Application do
     
   end
 
-  context 'POST /spaces/:id' do
+  context 'POST /spaces/:id' do 
     it 'Creates a new date request' do
       post("/login", :email => 'calum@calum.com', :password => 'CalumCalum')
-      @response = post('/spaces/1', start_date: '2022/10/12', end_date: '2022/10/19', user_id: 1, space_id: 1)
+      @response = post('/spaces/1', id:3, start_date: '2022/10/12', end_date: '2022/10/19', user_id: 1, space_id: 1)
       
       expect(@response.status).to eq(302)
       expect(Request.last.start_date.to_s).to eq('2022-10-12')
@@ -69,18 +69,6 @@ describe Application do
     end
   end
 
-  context 'a requestor with a pending request checks the space in question' do
-    it 'shows a pending notification below the calendar' do
-      post("/login", :email => 'tom@tom.com', :password => 'TomTom')
-      @response = get('/spaces/1')
-
-      responds_ok?
-
-      copy_test('Your request to book this space from 2022-10-15 to 2022-10-16 is pending approval from the owner')
-    end
-
-
-  end
 private
 
   def responds_ok?
