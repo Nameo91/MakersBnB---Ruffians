@@ -1,4 +1,4 @@
-ruby "3.0.0"
+ruby "3.1.2"
 
 # frozen_string_literal: true
 
