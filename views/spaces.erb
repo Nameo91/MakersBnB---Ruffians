@@ -14,6 +14,7 @@
     <h2>Check out all spaces</h2>
       <% @spaces.each do |space|%>
         <p><a href= "/spaces/<%= space.id %>"><%= space.space_name %></a></p>
+        <img src="<%= space.image%>" alt="Image of <%= space.space_name %>" width="320" height="180">
         <p>£<%= space.price_per_night %>0</p>
         <p>----------</p>
       <% end %>

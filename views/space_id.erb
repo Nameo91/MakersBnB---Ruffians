@@ -8,6 +8,7 @@
     <h1><%= @space.space_name %></h1>
     <div>
     <h2>Description: <%= @space.description %></h2>
+    <img src="<%= @space.image%>" alt="Image of <%= @space.space_name %>" width="640" height="360">
       <p>Price per night: £<%= @space.price_per_night %>0</p>
       <p>Dates currently booked: <p>
       <% @requests.each do |request| %>
