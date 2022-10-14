@@ -26,6 +26,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_10_142920) do
     t.string "space_name"
     t.text "description"
     t.money "price_per_night", scale: 2
+    t.text "image"
     t.integer "user_id"
     t.integer "request_id"
   end

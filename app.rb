@@ -53,7 +53,6 @@ class Application < Sinatra::Base
   end
 
   get '/spaces/new' do
-    # add logic to bar access if not logged in
     if login?
       @user = session[:user]
       return erb(:add_space)
@@ -88,6 +87,7 @@ class Application < Sinatra::Base
     @space = Space.create(
       space_name: params[:space_name],
       description: params[:description],
+      image: params[:image],
       price_per_night: params[:price_per_night],
       user_id: session[:user_id]
     )
