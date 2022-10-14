@@ -5,46 +5,22 @@
 # As a result some syntax may be a little unfamiliar. Feel free to dig into it
 # if you like, but you don't need to and it's OK if it seems strange.
 
+# This class represents the connection to the database.
+# It allows you to run SQL.
+
+# It has been designed to provide helpful error messages when things go wrong.
+# As a result some syntax may be a little unfamiliar. Feel free to dig into it
+# if you like, but you don't need to and it's OK if it seems strange.
+
 require 'pg'
 require 'rainbow/refinement'
 
 class DatabaseConnection
   using Rainbow
 
-  # If the environment variable (set by Heroku)
-  # is present, use this to open the connection.
-  if ENV['DATABASE_URL'] != nil
-    @connection = PG.connect(ENV['DATABASE_URL'])
-    return
-  end
-
-  if ENV['ENV'] == 'test'
-    database_name = 'music_library_test'
-  else
-    database_name = 'music_library'
-  end
-  @connection = PG.connect({ host: '127.0.0.1', dbname: database_name })
-end
-
-
   def self.connect(database_name)
     @host = '127.0.0.1'
-
-    if ENV['DATABASE_URL'] != nil
-      @connection = PG.connect(ENV['DATABASE_URL'])
-      return
-    end
-
     @database_name = database_name
-
-    if ENV['ENV'] == 'test'
-      @database_name = 'music_library_test'
-    else
-      @database_name = 'music_library'
-    end
-    @connection = PG.connect({ host: '127.0.0.1', dbname: database_name })
-  end
-
     puts "Connecting to database `#{@database_name}`...".blue unless test_mode?
 
     if test_mode? && !@database_name.end_with?("_test")
