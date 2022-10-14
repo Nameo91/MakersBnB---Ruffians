@@ -18,7 +18,7 @@ This repo contains the codebase for the MakersBnB project in Ruby (using Sinatra
 - If users make input errors, bespoke error pages displayed
 - HTML & CSS refined
 - Standardised HyperLinks on each page
-- Deployed via Heroku: https://quiet-mountain-48625.herokuapp.com/
+- Deployed via Heroku: https://whispering-coast-63820.herokuapp.com
 
 ## Setup
 
