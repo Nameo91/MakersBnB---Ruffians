@@ -15,54 +15,51 @@ class Application < Sinatra::Base
 
   get '/' do
     @user = session[:user]
-    return erb(:index, :layout => :layout)
+
+    return erb(:index)
   end
 
   get '/signup' do
-    # needs logic to bar entry to page if user session is active
-    @user = session[:user]
-    if !!session[:user]
-      return erb(:logged_in_error, :layout => :layout)
+    if login?
+      @user = session[:user]
+      
+      return erb(:logged_in_error)
     end
-    return erb(:signup, :layout => :layout)
+
+    return erb(:signup)
   end
 
   get '/login' do
-    @user = session[:user]
-    return erb(:login, :layout => :layout)
+    if login?
+      @user = session[:user]
+      
+      return erb(:logged_in_error)
+    end
+
+    return erb(:login)
   end
 
   get '/logout' do
-    session.clear  
+    session.clear 
+    
+    redirect '/'
   end
 
   get '/spaces' do
     @spaces = Space.all
     @user = session[:user]
-    return erb(:spaces, :layout => :layout)
+
+    return erb(:spaces)
   end
 
   get '/spaces/new' do
     # add logic to bar access if not logged in
-    @user = session[:user]
-    return erb(:add_space, :layout => :layout)
-  end
+    if login?
+      @user = session[:user]
+      return erb(:add_space)
+    end
 
-  get '/calendar_test' do
-    return erb(:calendar_test)
-  end
-
-  get '/request_submitted' do
-    return erb(:request_submitted)
-  end
-
-  post '/spaces' do
-    Space.create!(
-      space_name: params[:space_name],
-      description: params[:description],
-      price_per_night: params[:price_per_night]
-    )
-    redirect '/spaces'
+    redirect '/login'
   end
 
   get '/spaces/:id' do
@@ -73,6 +70,34 @@ class Application < Sinatra::Base
     @booking = Request.find_by_space_id(@space.id)
 
     return erb(:space_id, :layout => :layout)
+  end
+
+  get '/request_submitted' do
+    @user = session[:user]
+    
+    return erb(:request_submitted)
+  end
+
+  get '/request_error' do
+    
+    return
+  end
+
+  post '/spaces' do
+    @user = session[:user]
+    @space = Space.create(
+      space_name: params[:space_name],
+      description: params[:description],
+      price_per_night: params[:price_per_night],
+      user_id: session[:user_id]
+    )
+    
+    if !!(@space.save)
+    redirect '/spaces'
+    else
+
+    return erb(:new_space_error)
+    end
   end
 
   post '/spaces/:id' do
@@ -97,11 +122,6 @@ class Application < Sinatra::Base
     end
   end
 
-  get '/request_submitted' do
-    @user = session[:user]
-    return erb(:request_submitted, :layout => :layout)
-  end
-
   post '/signup' do
     @new_user = User.create(
       first_name: params[:first_name],
@@ -115,7 +135,7 @@ class Application < Sinatra::Base
     
     if !!@new_user.save
       redirect '/login'
-      else
+    else
       return erb(:signup_errors)
     end
   end
@@ -136,12 +156,25 @@ class Application < Sinatra::Base
     end
   end
 
-    private 
+  def login? 
+    !!session[:user]
+  end
 
-    def string_to_date(x)
-      to_date = Date.strptime(x, '%Y-%m-%d')
-      from_date = to_date.strftime('%d %B %Y')
-      from_date
+  def available?
+    request = Request.space_id.available_status
+    start_date_check = params[:start_date].between?(request[:start_date], request[:end_date])
+    end_date_check = params[:end_date].between?(request[:start_date], request[:end_date])
+
+    if request && start_date_check || end_date_check
+      return false
     end
   end
+
+  private 
+
+  def string_to_date(x)
+      to_date = Date.strptime(x, '%Y-%m-%d')
+      from_date = to_date.strftime('%d %B %Y')
+  end
+end
 

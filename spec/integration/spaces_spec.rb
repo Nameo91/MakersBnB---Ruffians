@@ -55,6 +55,7 @@ describe Application do
 
   context 'GET /spaces/new' do
     it 'returns an html form to add a new space' do
+      session_login
       @response = get('/spaces/new')
 
       responds_ok?
@@ -68,13 +69,23 @@ describe Application do
 
   context 'POST /spaces' do
     it 'Creates new space record' do
-      @response = post('/spaces', space_name: 'Gherkin', price_per_night: '500.0', description: 'A little corporate')
+      session_login
+      @response = post('/spaces', space_name: 'Gherkin', price_per_night: '500.0', description: 'A little corporate', user_id: 1)
 
-      # responds_ok?
       redirect?
       expect(Space.last.space_name).to eq('Gherkin')
       expect(Space.last.description).to eq('A little corporate')
-      # expect(Space.last.price_per_night).to eq('500')
+    end
+
+    it 'returns error messages with invalid input' do
+      session_login
+      @response = post('/spaces', user_id: 1)
+    
+      responds_ok?
+      copy_test('<h1>Please check: </h1>')
+      copy_test("Space name can't be blank")
+      copy_test("Price per night can't be blank")
+      copy_test("Description can't be blank")
     end
   end
 

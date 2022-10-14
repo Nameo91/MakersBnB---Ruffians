@@ -1,40 +1,33 @@
 <!DOCTYPE html>
 <html>
-    <head>
-    <style>
-        body {background-color: #878f99;}
-        h1   {color: 3e4444;}
-        h2   {color: 3e4444;}
-        p    {color: 3e4444;} 
-        p {font-style: italic;}
-    </style>
-        <title>Add Space</title>
-        <link rel="stylesheet" href="/style.css" >
-    </head>
-    <body>
-        <h1><%= @space.space_name %></h1>
-        <h2>Description: <%= @space.description %></h2>
-        <p>Price per night: £<%= @space.price_per_night %>0</p>
-        <p>Dates currently booked: <p>
-        <% @requests.each do |request| %>
-        - <%= request.start_date %> to <%= request.end_date %><br>
-              <% end %>
+  <head>
+    <title>Add Space</title> 
+  </head>
 
+  <body>
+    <h1><%= @space.space_name %></h1>
+    <div>
+    <h2>Description: <%= @space.description %></h2>
+      <p>Price per night: £<%= @space.price_per_night %>0</p>
+      <p>Dates currently booked: <p>
+      <% @requests.each do |request| %>
+      - <%= request.start_date %> to <%= request.end_date %><br>
+      <% end %>
+      <p>Please, login to make your request!</p>
+    </div>
+    
+    <form method="POST" action="/spaces/<%= @space.id %>">
+      <h2> Request a booking </h2>
+      <label for="start">Start Date:</label>
+      <input type="date" id="start" name="start_date"
+        value=<%= @date %>
+        min=<%= @date %> max="2023-12-31"> <br>
 
-        <form method="POST" action="/spaces/<%= @space.id %>">
-        <h2> Request a booking </h2>
-        <label for="start">Start Date:</label>
-        <input type="date" id="start" name="start_date"
-            value=<%= @date %>
-            min=<%= @date %> max="2023-12-31"> <br>
-
-        <label for="end">End Date:</label>
-        <input type="date" id="start" name="end_date"
-            value=<%= @date %> 
-            min=<%= @date %> max="2023-12-31"> <br>
-        <input type="submit" value="Submit"><br><br>
-
-        <a href= "../.."> Home</a><br>
-        <a href= ".."> Back to all spaces</a><br>
-    </body>
+      <label for="end">End Date:</label>
+      <input type="date" id="start" name="end_date"
+        value=<%= @date %> 
+        min=<%= @date %> max="2023-12-31"> <br>
+      <input type="submit" value="Submit"><br><br>
+    </form>
+  </body>
 </html>

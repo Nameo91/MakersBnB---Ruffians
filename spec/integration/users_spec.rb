@@ -50,7 +50,7 @@ RSpec.describe Application do
       session_login
       @response = get('/signup')
       responds_ok?
-      copy_test("You are already Logged in - you can't sign up again!")
+      copy_test("You are already Logged in - you can't sign up or login again!")
     end
   end
 
@@ -71,7 +71,7 @@ RSpec.describe Application do
 
     end
 
-    it 'should display error messages' do
+    it 'should display error messages with invaild input' do
       @response = post('/signup')
 
       responds_ok?

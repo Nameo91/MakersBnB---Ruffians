@@ -1,28 +1,21 @@
 <!DOCTYPE html>
 <html>
-    <head>
-      <style>
-        body {background-color: #878f99;}
-        h1   {color: 3e4444;}
-        p    {color: 3e4444;} 
-        p {font-style: italic;}
-    </style>
-        <!--
-            Head to https://github.com/makersacademy/web-applications/blob/main/pills/loading_css_or_static_files.md
-            If you're wondering how the CSS file below is being loaded.
-        -->
-        <link rel="stylesheet" href="/style.css" >
-             <title>MakersBnB</title>
-        <h1>Ruffhouses</h1>
-         <h2>Check out all spaces</h2>
-        <% @spaces.each do |space|%>
+  <head>
+  <!--
+        Head to https://github.com/makersacademy/web-applications/blob/main/pills/loading_css_or_static_files.md
+        If you're wondering how the CSS file below is being loaded.
+  -->
+  
+  <title>MakersBnB</title>
+  </head>
 
+  <body>  
+    <h1>Ruffhouses</h1>
+    <h2>Check out all spaces</h2>
+      <% @spaces.each do |space|%>
         <p><a href= "/spaces/<%= space.id %>"><%= space.space_name %></a></p>
         <p>£<%= space.price_per_night %>0</p>
         <p>----------</p>
-        <% end %>
-
-         <a href= "../"> Home</a><br>
-         <a href= "/spaces/new"> Advertise a space</a>
-    </head>
+      <% end %>
+    </body>
 </html>
