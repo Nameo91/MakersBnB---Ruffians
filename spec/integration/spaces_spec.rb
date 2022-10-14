@@ -18,8 +18,8 @@ describe Application do
   # one test suite for each set of related features),
   # you can duplicate this test file to create a new one.
   before(:each) do
-    Space.create(id: 1, space_name: 'Makers HQ', description: 'Awesome', price_per_night: '100.0', user_id: '1', request_id: '1')
-    Space.create(id: 2, space_name: 'Gherkin', description: 'A little corporate', price_per_night: '500.0', user_id: '2', request_id: '1')
+    Space.create(id: 1, space_name: 'Makers HQ', description: 'Awesome', image: 'space1_image_url', price_per_night: '100.0', user_id: '1', request_id: '1')
+    Space.create(id: 2, space_name: 'Gherkin', description: 'A little corporate', image: 'space2_image_url', price_per_night: '500.0', user_id: '2', request_id: '1')
     Request.create(id: 1, start_date: '2022-10-13', end_date: '2022-10-14', space_id: '1', user_id: '1')
     User.create(
       id: 1,  
@@ -70,7 +70,7 @@ describe Application do
   context 'POST /spaces' do
     it 'Creates new space record' do
       session_login
-      @response = post('/spaces', space_name: 'Gherkin', price_per_night: '500.0', description: 'A little corporate', user_id: 1)
+      @response = post('/spaces', id: 3, space_name: 'Gherkin', price_per_night: '500.0', description: 'A little corporate', image: 'space2_image_url', user_id: 1)
 
       redirect?
       expect(Space.last.space_name).to eq('Gherkin')
