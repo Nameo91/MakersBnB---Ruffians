@@ -39,7 +39,7 @@ rspec
 # Run to local server (better to do this in a separate terminal).
 rackup
 
-# OR visit https://quiet-mountain-48625.herokuapp.com/
+# OR visit https://whispering-coast-63820.herokuapp.com/
 ```
 
 ## Testing & Code clarity
