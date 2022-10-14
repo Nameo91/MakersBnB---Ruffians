@@ -44,6 +44,7 @@
 <link rel="stylesheet" href="/style.css" >
 </head>
 
+<body>
 <% if login? %>
   <ul>
     <li ><a href="/logout">Log out</a></li>
@@ -63,8 +64,6 @@
     <li><a href="/signup">Sign up</a></li>
   </ul> 
 <% end %>
-<footer> 
-  <img src="https://ibb.co/gtrSw7C">
-</footer>
+</body>
 <%= yield %>
 </html>
